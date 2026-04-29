@@ -36,3 +36,12 @@ export async function deletePaymentAction(paymentId: string, caseId: string) {
   revalidatePath(`/cases/${caseId}`)
   revalidatePath('/')
 }
+
+export async function updatePaymentStatusAction(paymentId: string, caseId: string, newStatus: string) {
+  const supabase = await createClient()
+  const { error } = await supabase.from('payments').update({ status: newStatus }).eq('id', paymentId)
+  if (error) throw new Error(error.message)
+  
+  revalidatePath(`/cases/${caseId}`)
+  revalidatePath('/')
+}

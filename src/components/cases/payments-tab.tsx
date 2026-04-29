@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { DollarSign } from 'lucide-react'
 import { addPaymentAction } from '@/actions/payments'
+import { SubmitPaymentButton } from '@/components/ui/submit-button'
+import { PaymentActions } from './payment-actions'
 
 export default async function PaymentsTab({ caseId }: { caseId: string }) {
   const supabase = await createClient()
@@ -35,6 +37,7 @@ export default async function PaymentsTab({ caseId }: { caseId: string }) {
                       <th className="p-4 px-6">Fecha</th>
                       <th className="p-4 px-6">Estado</th>
                       <th className="p-4 px-6">Notas</th>
+                      <th className="p-4 px-6 text-right">Acciones</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[var(--border)]">
@@ -53,6 +56,9 @@ export default async function PaymentsTab({ caseId }: { caseId: string }) {
                         </td>
                         <td className="p-4 px-6 text-[var(--muted)] text-sm">
                           {p.notes || '-'}
+                        </td>
+                        <td className="p-4 px-6 flex justify-end">
+                          <PaymentActions paymentId={p.id} caseId={caseId} status={p.status} />
                         </td>
                       </tr>
                     ))}
@@ -105,10 +111,7 @@ export default async function PaymentsTab({ caseId }: { caseId: string }) {
                 <textarea name="notes" rows={2} className="w-full bg-black/50 border border-[var(--border)] rounded-[var(--radius-md)] px-4 py-3 text-white resize-none focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-sm" placeholder="Referencia, banco..." />
               </div>
 
-              <Button type="submit" variant="primary" className="w-full mt-2">
-                <DollarSign className="w-4 h-4 mr-2" />
-                Registrar Pago
-              </Button>
+              <SubmitPaymentButton />
             </form>
           </CardContent>
         </Card>
