@@ -3,18 +3,18 @@
 @tailwind utilities;
 
 :root {
-  /* Colors - Premium Dark Mode */
-  --background: #000000;
+  /* Colors - Premium Dark Navy & Gold */
+  --background: #0A0F1C;
   --foreground: #F8FAFC;
-  --surface: #0F0F0F;
-  --surface-card: #171717;
-  --surface-elevated: #262626;
+  --surface: #111827;
+  --surface-card: #161E2E;
+  --surface-elevated: #1F2937;
   
-  --primary: #2563EB;
-  --primary-dark: #1D4ED8;
+  --primary: #E5C07B;
+  --primary-dark: #D4AF37;
   
   --muted: #94A3B8;
-  --border: #334155;
+  --border: #1E293B;
   
   --success: #10B981;
   --warning: #F59E0B;

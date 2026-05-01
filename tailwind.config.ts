@@ -23,6 +23,10 @@ const config: Config = {
         warning: "var(--warning)",
         danger: "var(--danger)",
       },
+      fontFamily: {
+        serif: ['var(--font-playfair)', 'serif'],
+        sans: ['var(--font-geist-sans)', 'sans-serif'],
+      },
       borderRadius: {
         'sm': 'var(--radius-sm)',
         'md': 'var(--radius-md)',

@@ -33,64 +33,64 @@ export default async function CaseDetailPage({
   }
 
   const tabs = [
-    { id: 'overview', name: 'Resumen', icon: FileText },
-    { id: 'payments', name: 'Pagos', icon: CreditCard },
-    { id: 'documents', name: 'Documentos', icon: FileText },
-    { id: 'events', name: 'Eventos', icon: Calendar },
+    { id: 'overview', name: 'RESUMEN' },
+    { id: 'payments', name: 'PAGOS' },
+    { id: 'documents', name: 'DOCUMENTOS' },
+    { id: 'events', name: 'EVENTOS' },
   ]
 
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col gap-4">
-        <Link href="/cases" className="inline-flex items-center text-sm text-[var(--muted)] hover:text-white transition-colors w-fit">
-          <ArrowLeft className="w-4 h-4 mr-1" />
-          Volver a Casos
-        </Link>
+      <div className="flex flex-col gap-6">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
           <div>
-            <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-section text-white">{caseItem.title}</h1>
-              <Badge variant={
-                caseItem.status === 'active' ? 'success' :
-                caseItem.status === 'in_progress' ? 'warning' : 'default'
-              }>
-                {caseItem.status === 'active' ? 'Activo' : 
-                 caseItem.status === 'in_progress' ? 'En Progreso' : 
-                 caseItem.status === 'closed' ? 'Cerrado' : 'Archivado'}
-              </Badge>
+            <div className="flex items-center gap-2 mb-2 text-xs font-bold tracking-widest text-[var(--muted)] uppercase">
+              <span>Expediente</span>
+              <span>/</span>
+              <span>Caso #2026-0{caseItem.id.toString().substring(0,3)}</span>
             </div>
-            <p className="text-subhead flex items-center gap-2 text-[var(--muted)]">
-              <User className="w-4 h-4" />
+            <h1 className="text-4xl font-serif font-bold text-white mb-4">{caseItem.title}</h1>
+            
+            <p className="flex items-center gap-2 text-sm">
+              <User className="w-4 h-4 text-[var(--primary)]" />
+              <span className="text-[var(--muted)]">Cliente:</span>
               {/* @ts-ignore */}
-              <Link href={`/clients/${caseItem.clients?.id}`} className="hover:text-white transition-colors underline-offset-4 hover:underline">
+              <Link href={`/clients/${caseItem.clients?.id}`} className="text-[var(--primary)] font-bold hover:underline">
                 {/* @ts-ignore */}
                 {caseItem.clients?.name}
               </Link>
             </p>
           </div>
+          
+          <div className="flex items-center gap-3">
+            <button className="px-5 py-2 text-xs font-bold tracking-wider text-white uppercase border border-[var(--border)] rounded hover:bg-white/5 transition-colors">
+              Editar Caso
+            </button>
+            <button className="px-5 py-2 text-xs font-bold tracking-wider text-black uppercase bg-[var(--primary)] hover:bg-[var(--primary-dark)] rounded transition-colors">
+              Descargar Expediente
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-[var(--border)] overflow-x-auto scrollbar-hide">
+      <div className="border-b border-[var(--border)]/50 overflow-x-auto scrollbar-hide">
         <nav className="flex space-x-8 min-w-max px-1" aria-label="Tabs">
           {tabs.map((t) => {
-            const Icon = t.icon
             const isActive = activeTab === t.id
             return (
               <Link
                 key={t.id}
                 href={`/cases/${id}?tab=${t.id}`}
                 className={`
-                  flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors whitespace-nowrap
+                  py-4 px-1 border-b-2 font-bold text-xs tracking-wider transition-colors whitespace-nowrap
                   ${isActive 
                     ? 'border-[var(--primary)] text-[var(--primary)]' 
                     : 'border-transparent text-[var(--muted)] hover:text-white hover:border-[var(--border)]'
                   }
                 `}
               >
-                <Icon className="w-4 h-4" />
                 {t.name}
               </Link>
             )

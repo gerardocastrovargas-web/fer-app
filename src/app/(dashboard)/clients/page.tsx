@@ -1,9 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Plus, Users, ChevronRight } from 'lucide-react'
+import { Plus, Users, Mail, Phone, Calendar as CalendarIcon, UserPlus, User } from 'lucide-react'
 import Link from 'next/link'
-import { SearchInput } from '@/components/ui/search-input'
 
 export default async function ClientsPage({
   searchParams,
@@ -26,60 +24,75 @@ export default async function ClientsPage({
   }
 
   const { data: clients } = await query
+  const totalClients = clients?.length || 0
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-section text-white mb-2">Clientes</h1>
-          <p className="text-subhead">Gestiona tu cartera de clientes y su información de contacto.</p>
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+        <div className="max-w-2xl">
+          <h1 className="text-4xl font-serif font-bold text-white mb-2">Directorio de Clientes</h1>
+          <p className="text-[var(--muted)]">Gestione su cartera de clientes con precisión. Acceda a expedientes, contactos y cronogramas de registro legal.</p>
         </div>
         <Link href="/clients/new">
-          <Button variant="primary" className="w-full sm:w-auto">
-            <Plus className="w-4 h-4 mr-2" />
+          <button className="w-full sm:w-auto bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-black font-bold py-2.5 px-5 rounded-md flex items-center justify-center transition-colors shadow-lg shadow-[var(--primary)]/20">
+            <UserPlus className="w-4 h-4 mr-2" />
             Nuevo Cliente
-          </Button>
+          </button>
         </Link>
       </div>
 
-      <div className="flex w-full">
-        <SearchInput placeholder="Buscar por nombre..." />
-      </div>
-
-      <Card>
+      <Card className="bg-[var(--surface-card)] border-[var(--border)] overflow-hidden">
         <CardContent className="p-0">
           {clients && clients.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-[var(--border)] text-sm font-medium text-[var(--muted)]">
-                    <th className="p-4 px-6 font-medium">Nombre</th>
-                    <th className="p-4 px-6 font-medium">Contacto</th>
-                    <th className="p-4 px-6 font-medium hidden md:table-cell">Fecha de Registro</th>
-                    <th className="p-4 px-6 font-medium opacity-0">Acciones</th>
+                  <tr className="border-b border-[var(--border)]/50 bg-white/[0.02]">
+                    <th className="p-4 px-6 text-xs font-bold tracking-wider text-[var(--muted)] uppercase w-2/5">Nombre</th>
+                    <th className="p-4 px-6 text-xs font-bold tracking-wider text-[var(--muted)] uppercase w-1/4">Contacto</th>
+                    <th className="p-4 px-6 text-xs font-bold tracking-wider text-[var(--muted)] uppercase hidden md:table-cell">Fecha de Registro</th>
+                    <th className="p-4 px-6 text-xs font-bold tracking-wider text-[var(--muted)] uppercase text-center w-32">Acciones</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[var(--border)]">
+                <tbody className="divide-y divide-[var(--border)]/50">
                   {clients.map((client) => (
                     <tr key={client.id} className="hover:bg-white/5 transition-colors group">
                       <td className="p-4 px-6">
-                        <Link href={`/clients/${client.id}`} className="font-medium text-white group-hover:text-[var(--primary)] transition-colors">
-                          {client.name}
-                        </Link>
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 rounded bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--primary)] shrink-0">
+                            <User className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <Link href={`/clients/${client.id}`} className="font-bold text-white group-hover:text-[var(--primary)] transition-colors block text-base">
+                              {client.name}
+                            </Link>
+                            <span className="text-xs text-[var(--muted)]">ID: CL-0{client.id.toString().substring(0,4)}</span>
+                          </div>
+                        </div>
                       </td>
                       <td className="p-4 px-6">
-                        <p className="text-sm text-white">{client.email || '—'}</p>
-                        <p className="text-xs text-[var(--muted)] mt-0.5">{client.phone || '—'}</p>
+                        <div className="space-y-1.5">
+                          <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
+                            <Mail className="w-3.5 h-3.5" />
+                            <span className="truncate max-w-[200px]">{client.email || '—'}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
+                            <Phone className="w-3.5 h-3.5" />
+                            <span>{client.phone || '—'}</span>
+                          </div>
+                        </div>
                       </td>
                       <td className="p-4 px-6 text-sm text-[var(--muted)] hidden md:table-cell">
-                        {new Date(client.created_at).toLocaleDateString('es-MX')}
+                        <div className="flex items-center gap-2">
+                          <CalendarIcon className="w-3.5 h-3.5" />
+                          <span>{new Date(client.created_at).toLocaleDateString('es-MX')}</span>
+                        </div>
                       </td>
-                      <td className="p-4 px-6 text-right">
+                      <td className="p-4 px-6 text-center">
                         <Link href={`/clients/${client.id}`}>
-                          <Button variant="secondary" size="sm">
+                          <button className="px-4 py-1.5 text-sm font-medium text-white border border-[var(--border)] rounded hover:border-[var(--primary)] hover:text-[var(--primary)] transition-colors">
                             Ver detalles
-                            <ChevronRight className="w-4 h-4 ml-1" />
-                          </Button>
+                          </button>
                         </Link>
                       </td>
                     </tr>
@@ -88,7 +101,7 @@ export default async function ClientsPage({
               </table>
             </div>
           ) : (
-             <div className="p-12 text-center">
+             <div className="p-12 text-center border-t border-[var(--border)]">
               <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 text-[var(--muted)]">
                 <Users className="w-8 h-8" />
               </div>
@@ -100,13 +113,30 @@ export default async function ClientsPage({
               </p>
               {!q && (
                 <Link href="/clients/new">
-                  <Button variant="outline">Crear cliente manualmente</Button>
+                  <button className="px-4 py-2 border border-[var(--border)] text-white rounded hover:bg-white/5">
+                    Crear cliente manualmente
+                  </button>
                 </Link>
               )}
             </div>
           )}
         </CardContent>
       </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+        <Card className="bg-[var(--surface-card)] border-l-2 border-l-[var(--primary)] border-y border-r border-[var(--border)] p-6">
+          <p className="text-xs font-bold tracking-wider text-[var(--muted)] uppercase mb-2">Total de Clientes</p>
+          <p className="text-3xl font-bold text-[var(--primary)]">{totalClients}</p>
+        </Card>
+        <Card className="bg-[var(--surface-card)] border-[var(--border)] p-6">
+          <p className="text-xs font-bold tracking-wider text-[var(--muted)] uppercase mb-2">Casos Activos</p>
+          <p className="text-3xl font-bold text-white">432</p>
+        </Card>
+        <Card className="bg-[var(--surface-card)] border-[var(--border)] p-6">
+          <p className="text-xs font-bold tracking-wider text-[var(--muted)] uppercase mb-2">Altas este Mes</p>
+          <p className="text-3xl font-bold text-white">+12%</p>
+        </Card>
+      </div>
     </div>
   )
 }

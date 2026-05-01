@@ -88,7 +88,7 @@ export function DashboardCalendar({ events }: DashboardCalendarProps) {
             <div 
               key={day} 
               className={`h-8 w-8 mx-auto rounded-full flex flex-col items-center justify-center text-sm relative group cursor-default transition-colors ${
-                isToday ? 'bg-[var(--primary)] text-white font-bold' : 
+                isToday ? 'bg-emerald-500 text-black font-bold' : 
                 hasEvents ? 'bg-amber-500/20 text-amber-500 font-medium hover:bg-amber-500/30' : 
                 'text-[var(--muted)] hover:bg-white/5 hover:text-white'
               }`}
@@ -100,7 +100,7 @@ export function DashboardCalendar({ events }: DashboardCalendarProps) {
                 <div className="absolute bottom-1 w-1 h-1 rounded-full bg-amber-500" />
               )}
               {hasEvents && isToday && (
-                <div className="absolute bottom-1 w-1 h-1 rounded-full bg-white" />
+                <div className="absolute bottom-1 w-1 h-1 rounded-full bg-black/50" />
               )}
 
               {/* Tooltip for events */}
@@ -124,7 +124,7 @@ export function DashboardCalendar({ events }: DashboardCalendarProps) {
       {/* Legend */}
       <div className="flex items-center gap-4 mt-6 pt-4 border-t border-[var(--border)] px-2">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-[var(--primary)]" />
+          <div className="w-3 h-3 rounded-full bg-emerald-500" />
           <span className="text-xs text-[var(--muted)]">Hoy</span>
         </div>
         <div className="flex items-center gap-2">
