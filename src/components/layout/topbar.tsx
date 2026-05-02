@@ -1,11 +1,13 @@
 'use client'
 
 import { Bell, History } from 'lucide-react'
+import { MobileNav } from '@/components/layout/mobile-nav'
 
 export function Topbar() {
   return (
-    <header className="h-16 bg-[var(--background)] border-b border-[var(--border)] flex items-center justify-between px-6 sticky top-0 z-10">
-      <div className="flex-1 max-w-xl">
+    <header className="h-16 bg-[var(--background)] border-b border-[var(--border)] flex items-center justify-between px-4 md:px-6 sticky top-0 z-10">
+      <div className="flex items-center gap-2 flex-1 max-w-xl">
+        <MobileNav />
         {/* Espacio reservado si se desea agregar otro elemento en el futuro */}
       </div>
       
