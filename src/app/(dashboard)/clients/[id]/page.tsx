@@ -6,6 +6,7 @@ import { ArrowLeft, Edit, Plus, Mail, Phone, Briefcase, Calendar } from 'lucide-
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArchiveClientButton } from '@/components/clients/archive-client-button'
+import { ArchiveCaseButton } from '@/components/cases/archive-case-button'
 
 export default async function ClientDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -100,21 +101,24 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                 <ul className="divide-y divide-[var(--border)]">
                   {cases.map((c) => (
                     <li key={c.id} className="p-4 px-6 hover:bg-white/5 transition-colors group block">
-                      <Link href={`/cases/${c.id}`} className="block">
-                        <div className="flex justify-between items-start mb-2">
-                          <h3 className="font-medium text-white group-hover:text-[var(--primary)] transition-colors">{c.title}</h3>
-                          <Badge variant={
-                            c.status === 'active' ? 'success' :
-                            c.status === 'in_progress' ? 'warning' : 'default'
-                          }>
-                            {c.status === 'active' ? 'Activo' : 
-                             c.status === 'in_progress' ? 'En Progreso' : 
-                             c.status === 'closed' ? 'Cerrado' : 'Archivado'}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-[var(--muted)] line-clamp-2">{c.description || 'Sin descripción'}</p>
-                        <p className="text-xs text-[var(--muted)] mt-4">Actualizado: {new Date(c.updated_at).toLocaleDateString('es-MX')}</p>
-                      </Link>
+                      <div className="flex justify-between items-start mb-2">
+                        <Link href={`/cases/${c.id}`} className="block flex-1">
+                          <div className="flex justify-between items-start">
+                            <h3 className="font-medium text-white group-hover:text-[var(--primary)] transition-colors">{c.title}</h3>
+                            <Badge variant={
+                              c.status === 'active' ? 'success' :
+                              c.status === 'in_progress' ? 'warning' : 'default'
+                            }>
+                              {c.status === 'active' ? 'Activo' : 
+                               c.status === 'in_progress' ? 'En Progreso' : 
+                               c.status === 'closed' ? 'Cerrado' : 'Archivado'}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-[var(--muted)] line-clamp-2 mt-1">{c.description || 'Sin descripción'}</p>
+                          <p className="text-xs text-[var(--muted)] mt-3">Actualizado: {new Date(c.updated_at).toLocaleDateString('es-MX')}</p>
+                        </Link>
+                        <ArchiveCaseButton caseId={c.id} caseTitle={c.title} />
+                      </div>
                     </li>
                   ))}
                 </ul>

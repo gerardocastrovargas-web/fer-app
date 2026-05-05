@@ -52,7 +52,14 @@ export async function updateCaseStatusAction(id: string, newStatus: string) {
 
 export async function archiveCaseAction(id: string) {
   const supabase = await createClient()
-  
+
+  // Fetch client_id so we can revalidate the client detail page too
+  const { data: caseData } = await supabase
+    .from('cases')
+    .select('client_id')
+    .eq('id', id)
+    .single()
+
   const { error: dataError } = await supabase
     .from('cases')
     .update({ is_archived: true })
@@ -63,5 +70,9 @@ export async function archiveCaseAction(id: string) {
   }
 
   revalidatePath('/cases')
+  revalidatePath(`/cases/${id}`)
+  if (caseData?.client_id) {
+    revalidatePath(`/clients/${caseData.client_id}`)
+  }
   redirect('/cases')
 }

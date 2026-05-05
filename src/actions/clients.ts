@@ -59,7 +59,19 @@ export async function updateClientAction(id: string, formData: FormData) {
 
 export async function archiveClientAction(id: string) {
   const supabase = await createClient()
-  
+
+  // 1. Archivar todos los casos del cliente en cascada
+  const { error: casesError } = await supabase
+    .from('cases')
+    .update({ is_archived: true })
+    .eq('client_id', id)
+    .eq('is_archived', false)
+
+  if (casesError) {
+    throw new Error(casesError.message)
+  }
+
+  // 2. Archivar al cliente
   const { error } = await supabase
     .from('clients')
     .update({ is_archived: true })
@@ -70,5 +82,6 @@ export async function archiveClientAction(id: string) {
   }
 
   revalidatePath('/clients')
+  revalidatePath('/cases')
   redirect('/clients')
 }
