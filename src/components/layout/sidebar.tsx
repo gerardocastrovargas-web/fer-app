@@ -2,11 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, Users, Briefcase, Archive, LogOut, Scale } from 'lucide-react'
+import { LayoutDashboard, Users, Briefcase, Archive, LogOut, Scale, CalendarDays } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 const navItems = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+  { name: 'Agenda', href: '/agenda', icon: CalendarDays },
   { name: 'Clientes', href: '/clients', icon: Users },
   { name: 'Casos', href: '/cases', icon: Briefcase },
   { name: 'Archivo', href: '/archive', icon: Archive },

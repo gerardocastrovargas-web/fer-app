@@ -145,7 +145,7 @@ export default async function DashboardPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-[var(--border)]/50">
             <h2 className="text-2xl font-serif text-white">Calendario</h2>
-            <Link href="/" className="text-sm font-medium text-[var(--primary)] hover:underline">Abrir Agenda</Link>
+            <Link href="/agenda" className="text-sm font-medium text-[var(--primary)] hover:underline">Abrir Agenda</Link>
           </div>
           <Card className="bg-[var(--surface-card)] border-[var(--border)] overflow-hidden">
             <DashboardCalendar events={nextEvents || []} />
