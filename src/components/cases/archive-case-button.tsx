@@ -25,7 +25,7 @@ export function ArchiveCaseButton({ caseId, caseTitle }: ArchiveCaseButtonProps)
       <button
         onClick={(e) => { e.preventDefault(); setOpen(true) }}
         title="Archivar caso"
-        className="opacity-0 group-hover:opacity-100 p-1.5 rounded text-[var(--muted)] hover:text-amber-400 hover:bg-amber-400/10 transition-all"
+        className="p-1.5 rounded text-[var(--muted)] hover:text-amber-400 hover:bg-amber-400/10 transition-all"
       >
         <Archive className="w-4 h-4" />
       </button>

@@ -6,6 +6,7 @@ import { Plus, Briefcase, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import { SearchInput } from '@/components/ui/search-input'
 import { StatusFilter } from '@/components/ui/status-filter'
+import { ArchiveCaseButton } from '@/components/cases/archive-case-button'
 
 export default async function CasesPage({
   searchParams,
@@ -98,12 +99,15 @@ export default async function CasesPage({
                         </Badge>
                       </td>
                       <td className="p-4 px-6 text-right">
-                        <Link href={`/cases/${c.id}`}>
-                          <Button variant="secondary" size="sm">
-                            Ver detalles
-                            <ChevronRight className="w-4 h-4 ml-1" />
-                          </Button>
-                        </Link>
+                        <div className="flex items-center justify-end gap-2">
+                          <ArchiveCaseButton caseId={c.id} caseTitle={c.title} />
+                          <Link href={`/cases/${c.id}`}>
+                            <Button variant="secondary" size="sm">
+                              Ver detalles
+                              <ChevronRight className="w-4 h-4 ml-1" />
+                            </Button>
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   ))}
