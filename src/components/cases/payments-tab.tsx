@@ -8,12 +8,18 @@ import { PaymentActions } from './payment-actions'
 export default async function PaymentsTab({ caseId }: { caseId: string }) {
   const supabase = await createClient()
 
-  // Fetch case to get total_fee
-  const { data: caseData } = await supabase
-    .from('cases')
-    .select('total_fee')
-    .eq('id', caseId)
-    .single()
+  // Fetch case to get total_fee (resilient: column may not exist yet)
+  let totalFeeRaw = 0
+  try {
+    const { data: caseData } = await supabase
+      .from('cases')
+      .select('total_fee')
+      .eq('id', caseId)
+      .single()
+    totalFeeRaw = Number(caseData?.total_fee ?? 0)
+  } catch {
+    totalFeeRaw = 0
+  }
 
   const { data: payments } = await supabase
     .from('payments')
@@ -22,10 +28,10 @@ export default async function PaymentsTab({ caseId }: { caseId: string }) {
     .eq('is_archived', false)
     .order('created_at', { ascending: false })
 
-  const addPaymentWithId    = addPaymentAction.bind(null, caseId)
+  const addPaymentWithId     = addPaymentAction.bind(null, caseId)
   const updateTotalFeeWithId = updateTotalFeeAction.bind(null, caseId)
 
-  const totalFee    = Number(caseData?.total_fee ?? 0)
+  const totalFee    = totalFeeRaw
   const totalPaid   = payments?.reduce((sum, p) => sum + Number(p.amount), 0) ?? 0
   const faltante    = Math.max(0, totalFee - totalPaid)
   const progressPct = totalFee > 0 ? Math.min(100, (totalPaid / totalFee) * 100) : 0
