@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent } from '@/components/ui/card'
 import { Plus, Users, Mail, Phone, Calendar as CalendarIcon, UserPlus, User } from 'lucide-react'
 import Link from 'next/link'
+import { ArchiveClientButton } from '@/components/clients/archive-client-button'
 
 export default async function ClientsPage({
   searchParams,
@@ -88,12 +89,19 @@ export default async function ClientsPage({
                           <span>{new Date(client.created_at).toLocaleDateString('es-MX')}</span>
                         </div>
                       </td>
-                      <td className="p-4 px-6 text-center">
-                        <Link href={`/clients/${client.id}`}>
-                          <button className="px-4 py-1.5 text-sm font-medium text-white border border-[var(--border)] rounded hover:border-[var(--primary)] hover:text-[var(--primary)] transition-colors">
-                            Ver detalles
-                          </button>
-                        </Link>
+                      <td className="p-4 px-6">
+                        <div className="flex items-center justify-center gap-2">
+                          <Link href={`/clients/${client.id}`}>
+                            <button className="px-4 py-1.5 text-sm font-medium text-white border border-[var(--border)] rounded hover:border-[var(--primary)] hover:text-[var(--primary)] transition-colors">
+                              Ver detalles
+                            </button>
+                          </Link>
+                          <ArchiveClientButton
+                            clientId={client.id}
+                            clientName={client.name}
+                            variant="icon"
+                          />
+                        </div>
                       </td>
                     </tr>
                   ))}

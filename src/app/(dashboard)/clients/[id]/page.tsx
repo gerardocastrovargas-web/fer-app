@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { ArrowLeft, Edit, Plus, Mail, Phone, Briefcase, Calendar } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { ArchiveClientButton } from '@/components/clients/archive-client-button'
 
 export default async function ClientDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -49,8 +50,13 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
           </div>
         </div>
         <div className="flex gap-3">
+          <ArchiveClientButton
+            clientId={id}
+            clientName={client.name}
+            variant="full"
+          />
           <Link href={`/cases/new?clientId=${id}`}>
-            <Button variant="primary"><Plus className="w-4 h-4 mr-2"/> Nuevo Caso</Button>
+            <Button variant="primary"><Plus className="w-4 h-4 mr-2"/>Nuevo Caso</Button>
           </Link>
         </div>
       </div>
