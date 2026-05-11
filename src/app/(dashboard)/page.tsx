@@ -20,13 +20,29 @@ export default async function DashboardPage() {
     .eq('status', 'active')
     .eq('is_archived', false)
 
-  // 3. Fetch Pending Payments
-  const { data: pendingPaymentsData } = await supabase
-    .from('payments')
-    .select('amount')
-    .eq('status', 'pending')
+  // 3. Fetch Pending Payments (Faltante total)
+  const { data: allCases } = await supabase
+    .from('cases')
+    .select('id, total_fee')
     .eq('is_archived', false)
-  const totalPendingPayments = pendingPaymentsData?.reduce((sum, item) => sum + Number(item.amount), 0) || 0
+
+  const { data: allPayments } = await supabase
+    .from('payments')
+    .select('case_id, amount')
+    .eq('is_archived', false)
+
+  let totalPendingPayments = 0
+  if (allCases) {
+    allCases.forEach(c => {
+      const caseFee = Number(c.total_fee || 0)
+      if (caseFee > 0) {
+        const casePayments = allPayments?.filter(p => p.case_id === c.id) || []
+        const totalPaidForCase = casePayments.reduce((sum, p) => sum + Number(p.amount || 0), 0)
+        const faltante = Math.max(0, caseFee - totalPaidForCase)
+        totalPendingPayments += faltante
+      }
+    })
+  }
 
   // 4. Fetch Upcoming Events
   const today = new Date().toISOString()
@@ -39,7 +55,7 @@ export default async function DashboardPage() {
   const stats = [
     { name: 'TOTAL CLIENTES', value: totalClients || 0, sub: '+1 esta semana', icon: Users, isGold: false },
     { name: 'CASOS ACTIVOS', value: activeCases || 0, sub: 'Sin retrasos', icon: Briefcase, isGold: false },
-    { name: 'PAGOS PENDIENTES', value: `$${totalPendingPayments.toLocaleString('es-MX')}`, sub: 'Vence en 3 días', icon: DollarSign, isGold: true },
+    { name: 'PAGOS PENDIENTES', value: `$${totalPendingPayments.toLocaleString('es-MX')}`, sub: 'Total por cobrar', icon: DollarSign, isGold: true },
     { name: 'PRÓXIMOS EVENTOS', value: upcomingEvents || 0, sub: 'Agenda libre hoy', icon: Calendar, isGold: false },
   ]
 
