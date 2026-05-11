@@ -67,8 +67,8 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-10">
       <div>
-        <h1 className="text-4xl font-serif font-bold text-white mb-2">Dashboard Principal</h1>
-        <p className="text-[var(--muted)]">Resumen de tu actividad legal y estado financiero.</p>
+        <h1 className="text-4xl font-serif font-bold text-white mb-2">Dashboard</h1>
+        <p className="text-[var(--muted)]">Resumen de tu actividad y estado general.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
